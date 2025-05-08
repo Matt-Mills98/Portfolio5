@@ -1,35 +1,68 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Home from "./Home";
 
-function App() {
-  const [count, setCount] = useState(0)
+import "./index.css";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ScrollToPlugin from "gsap/ScrollToPlugin";
+import { useGSAP } from "@gsap/react";
+import { useEffect, useState } from "react";
+import MorphSVGPlugin from "gsap/MorphSVGPlugin";
+import SplitText from "gsap/SplitText";
+import ScrambleTextPlugin from "gsap/ScrambleTextPlugin";
+import Draggable from "gsap/Draggable";
+import InertiaPlugin from "gsap/InertiaPlugin";
+
+
+gsap.registerPlugin(
+  ScrollTrigger,
+  ScrollToPlugin,
+  MorphSVGPlugin,
+  ScrambleTextPlugin,
+  SplitText,
+  useGSAP,
+  Draggable,
+  InertiaPlugin
+);
+
+export default function App() {
+  const accentColors = [
+    "#EF4444",
+    "#F97316",
+    "#F59E0B",
+    "#EAB308",
+    "#84CC16",
+    "#22C55E",
+    "#10B981",
+    "#14B8A6",
+    "#06B6D4",
+    "#0EA5E9",
+    "#6366F1",
+    "#A855F7",
+    "#EC4899",
+    "#F43F5E",
+    "#94A3B8",
+    "#CCCCAA",
+  ];
+
+  const [color, setColor] = useState(
+    localStorage.getItem("accentColor") ?? "#CCCCAA"
+  );
+
+  const setAccentColor = (color) => {
+    localStorage.setItem("accentColor", color);
+    setColor(color);
+  };
+
+  const scrollToDiv = (id) => {
+    const element = document.getElementById(id);
+    element.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Home
+      color={color}
+      accentColors={accentColors}
+      setColor={setAccentColor}
+    ></Home>
+  );
 }
-
-export default App
