@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import SplitText from "gsap/SplitText";
 import gsap from "gsap";
 import Menu from "./Menu";
+import ColorPicker from "./ColorPicker";
 
 export default function Home({ color, accentColors, setColor }) {
   const [loadMmills, setMmills] = useState(true);
@@ -73,7 +74,7 @@ export default function Home({ color, accentColors, setColor }) {
         "+=5"
       );
   }, []);
- 
+
   return (
     <ErrorBoundary
       fallback={
@@ -93,6 +94,7 @@ export default function Home({ color, accentColors, setColor }) {
               {loadMmills && <MmillsLogo color={color} />}
             </div>
             <Menu accentColors={accentColors} setColor={setColor}></Menu>
+            <ColorPicker accentColors={accentColors} setColor={setColor}></ColorPicker>
 
             <div
               id="mmillsContainer"
