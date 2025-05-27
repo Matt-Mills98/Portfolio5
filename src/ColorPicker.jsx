@@ -49,6 +49,14 @@ function ColorPicker(props) {
       const x = radius * Math.cos(angle);
       const y = radius * Math.sin(angle);
 
+      let hover = gsap.timeline({ defaults: { duration: 0.1 } });
+      hover.to(item, { opacity: 1, scale: 1, zIndex:20 });
+      hover.to(item, { rotation: -60, scale: 1.25, zIndex:100, boxShadow:"1px 2px 5px" });
+      hover.reversed(true);
+      item.anim = hover;
+      item.addEventListener("mouseenter", toggleGrow);
+      item.addEventListener("mouseleave", toggleGrow);
+
       logoMotion.current
         .fromTo(
           item,
@@ -66,6 +74,9 @@ function ColorPicker(props) {
         .reverse();
     });
   }, []);
+  function toggleGrow() {
+    this.anim.reversed(!this.anim.reversed());
+  }
   const logoMotionIsActive = contextSafe(() => {
     return logoMotion.current.isActive();
   });
@@ -86,14 +97,12 @@ function ColorPicker(props) {
   });
 
   return (
-    <div className="gsapContainer absolute top-7 right-6 rounded-xl flex flex-col z-20">
+    <div className="gsapContainer absolute top-7 right-6 rounded-xl flex flex-col z-20" title="Change Accent Color" aria-label="Change the accent color of the website">
       <div
         onClick={() => {
-          if (!logoMotionIsActive()) {
-            logoMotionPaused() || !logoMotionReversed()
-              ? logoMotionPlay()
-              : logoMotionReverse();
-          }
+          logoMotionPaused() || !logoMotionReversed()
+            ? logoMotionPlay()
+            : logoMotionReverse();
         }}
         className={`transition  cursor-pointer  h-8 w-8`}
       >
@@ -138,7 +147,6 @@ function ColorPicker(props) {
               if (logoMotionPaused() || !logoMotionReversed()) {
                 logoMotionPlay();
               } else {
-                logoMotionRemovePause();
                 logoMotionReverse();
               }
             }}

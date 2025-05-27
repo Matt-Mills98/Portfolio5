@@ -4,36 +4,11 @@ import gsap from "gsap";
 import MotionPathPlugin from "gsap/MotionPathPlugin";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
-import resume from "./assets/MMills_Resume_2024.pdf";
-
+import { menuOptions } from "./Data/Data";
 function Menu(props) {
-  const { accentColors, setColor } = props;
-
-  const menuOptions = [
-    {
-      id: "LinkedIn",
-      asset: "/LinkedIn.png",
-      link: "https://www.linkedin.com/in/matt-mills-633b00214/",
-    },
-    {
-      id: "Resume",
-      asset: "/PDFIcon.png",
-      link: resume,
-    },
-    {
-      id: "Email",
-      asset: "/MailIcon.png",
-      link: "mailto:mattmills32013@gmail.com",
-    },
-    {
-      id: "GitHub",
-      asset: "/GithubIcon.png",
-      link: "https://github.com/Matt-Mills98",
-    },
-  ];
+  const { color } = props;
 
   gsap.registerPlugin(MotionPathPlugin);
-  const tl = useRef();
   const logoMotion = useRef();
 
   // Assuming you have a circle path defined as #circlePath
@@ -66,15 +41,14 @@ function Menu(props) {
           opacity: 1,
           y: 0,
         },
-        0.4
+        0.3
       )
-      .addPause(0.6)
       .to(
         "#middleHamburgerLine",
         {
           opacity: 0,
         },
-        0.6
+        0.3
       )
       .to(
         "#MmillsLogo",
@@ -83,7 +57,7 @@ function Menu(props) {
           scaleX: 1.25,
           rotate: 45,
         },
-        0.6
+        0.3
       )
       .to(
         "#lowerHamburgerLine",
@@ -92,7 +66,7 @@ function Menu(props) {
           scaleX: 1.25,
           rotate: -45,
         },
-        0.6
+        0.3
       );
     const items = gsap.utils.toArray(".circleItems");
 
@@ -101,6 +75,14 @@ function Menu(props) {
       const angle = (index / items.length) * Math.PI * 1;
       const x = radius * Math.cos(angle);
       const y = radius * Math.sin(angle);
+
+      let hover = gsap.timeline({ defaults: { duration: 0.1 } });
+      hover.to(item, { opacity: 1, scale: 1 });
+      hover.to(item, { rotation: 20, scale: 1.25 });
+      hover.reversed(true);
+      item.anim = hover;
+      item.addEventListener("mouseenter", toggleGrow);
+      item.addEventListener("mouseleave", toggleGrow);
 
       logoMotion.current
         .fromTo(
@@ -111,84 +93,43 @@ function Menu(props) {
             x: x,
             y: y,
             autoAlpha: 1,
-            duration: 0.6,
+            duration: 0.3,
             ease: "power1.inOut",
           },
-          0.6
+          0.1
         )
         .reverse();
     });
   }, []);
-  const logoMotionIsActive = contextSafe(() => {
-    return logoMotion.current.isActive();
-  });
-  const logoMotionRemovePause = contextSafe(() => {
-    return logoMotion.current.removePause(0.4);
-  });
+  function toggleGrow() {
+    this.anim.reversed(!this.anim.reversed());
+  }
+
   const logoMotionPlay = contextSafe(() => {
     return logoMotion.current.play();
   });
   const logoMotionReversed = contextSafe(() => {
-    return !logoMotion.current.reversed();
+    return logoMotion.current.reversed();
   });
   const logoMotionReverse = contextSafe(() => {
-    return !logoMotion.current.reverse();
+    return logoMotion.current.reverse();
   });
-  const logoMotionPaused = contextSafe(() => {
-    return logoMotion.current.paused();
-  });
-
-  /*const onMouseEnter = ({ currentTarget }) => {
-    let q = gsap.utils.selector(currentTarget);
-    gsap.to(q("#strike"), { width: "100%" });
-  };
-
-  const onMouseLeave = ({ currentTarget }) => {
-    let q = gsap.utils.selector(currentTarget);
-    gsap.to(q("#strike"), { width: "0px" });
-  };
-
-  const className =
-    "appButton flex justify-center items-start font-Poppins font-medium leading-3 text-white relative";
-  const strikeClass =
-    "bg-white h-[2px]  absolute top-[40%] left-0 right-0 mr-auto ml-auto w-0";
-  const menuStrikeClass =
-    "bg-white h-[4px]  absolute top-[45%] left-0 right-0 mr-auto ml-auto w-0 ";
-  const menuItemClass =
-    "appButton flex justify-center font-Poppins text-3xl text-white relative my-6";
-*/
 
   return (
-    <div className="gsapContainer absolute top-6 left-6 rounded-xl flex flex-col z-20">
+    <div
+      className="gsapContainer absolute top-6 left-6 rounded-xl flex flex-col z-20 cursor-pointer"
+      title="Menu"
+      aria-label="Menu"
+    >
       <div
-        onMouseEnter={() => {
-          if (logoMotionPaused() && !logoMotionReversed()) {
-            logoMotionReverse();
-          } else if (
-            !logoMotionPaused() &&
-            !logoMotionReversed() &&
-            !logoMotionIsActive()
-          ) {
-            logoMotionPlay();
-          }
-        }}
-        onMouseLeave={() => {
-          if (!logoMotionIsActive()) {
-            if (logoMotionPaused() && logoMotionReversed()) {
-              logoMotionReverse();
-            } else if (logoMotionPaused() && !logoMotionReversed()) {
-              logoMotionReverse();
-            }
-          }
-        }}
         onClick={() => {
-          if (!logoMotionIsActive()) {
-            logoMotionPaused() || !logoMotionReversed()
-              ? logoMotionPlay()
-              : logoMotionReverse();
+          if (logoMotionReversed()) {
+            logoMotionPlay();
+          } else {
+            logoMotionReverse();
           }
         }}
-        className={`transition  cursor-pointer  h-8 w-8`}
+        className={`transition  h-8 w-8`}
       >
         <a className="flex justify-center items-center font-medium block h-full w-full rounded p-0 cursor-pointer">
           <svg
@@ -232,19 +173,18 @@ function Menu(props) {
         {menuOptions?.map((option) => (
           <div
             key={`select-${option.id}`}
+            aria-label={option.label}
+            title={option.label}
             onClick={() => {
-              if (logoMotionPaused() || !logoMotionReversed()) {
+              if (logoMotionReversed()) {
                 logoMotionPlay();
               } else {
-                logoMotionRemovePause();
                 logoMotionReverse();
               }
             }}
             className={`circleItems w-8 h-8 absolute cursor-pointer`}
           >
-            <a href={option.link}>
-              <img src={option.asset}></img>
-            </a>
+            <a href={option.link}>{option.child} </a>
           </div>
         ))}
       </div>

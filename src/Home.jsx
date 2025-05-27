@@ -8,6 +8,7 @@ import SplitText from "gsap/SplitText";
 import gsap from "gsap";
 import Menu from "./Menu";
 import ColorPicker from "./ColorPicker";
+import BodyPanel from "./BodyPanel";
 
 export default function Home({ color, accentColors, setColor }) {
   const [loadMmills, setMmills] = useState(true);
@@ -22,7 +23,7 @@ export default function Home({ color, accentColors, setColor }) {
         scrollTrigger: {
           trigger: "#Mmills",
           start: "clamp(top top)",
-          endTrigger: "#aboutPanel",
+          endTrigger: "#body",
           end: "clamp(top center)",
           scrub: 1,
           // markers: true
@@ -39,7 +40,7 @@ export default function Home({ color, accentColors, setColor }) {
         scrollTrigger: {
           trigger: "#Mmills",
           start: "clamp(top top)",
-          endTrigger: "#aboutPanel",
+          endTrigger: "#body",
           end: "+=25",
           scrub: 1,
         },
@@ -88,22 +89,25 @@ export default function Home({ color, accentColors, setColor }) {
         <div id="containerTop">
           <section
             id="Mmills"
-            className="panel min-h-screen w-screen flex items-center justify-center max-w-100v sticky top-0"
+            className="panel min-h-screen w-screen max-w-screen flex items-center justify-center max-w-100v sticky top-0 overflow-hidden"
           >
             <div className="max-w-100v w-full flex items-center justify-center min-h-screen h-screen">
               {loadMmills && <MmillsLogo color={color} />}
             </div>
-            <Menu accentColors={accentColors} setColor={setColor}></Menu>
-            <ColorPicker accentColors={accentColors} setColor={setColor}></ColorPicker>
+            <Menu color={color}></Menu>
+            <ColorPicker
+              accentColors={accentColors}
+              setColor={setColor}
+            ></ColorPicker>
 
             <div
               id="mmillsContainer"
-              className="absolute md:flex-nowrap md:flex justify-center"
+              className="absolute md:flex-nowrap md:flex justify-center overflow-hidden"
             >
-              <p className="mmillsTitle text-white font-Poppins text-3xl mx-2 font-medium pt-2 opacity-90 text-center whitespace-nowrap select-none ">
+              <p className="mmillsTitle text-white font-[Inter] font-sans text-3xl mx-2 font-medium pt-2 opacity-90 text-center whitespace-nowrap select-none ">
                 [ MATT MILLS ]
               </p>
-              <p className="mmillsTitle text-white font-Poppins text-3xl mx-2 font-extralight pt-2 opacity-90 text-center whitespace-nowrap select-none">
+              <p className="mmillsTitle text-white font-[Inter] font-sans font-thin text-3xl mx-2 font-extralight pt-2 opacity-90 text-center whitespace-nowrap select-none">
                 [ SOFTWARE ENGINEER ]
               </p>
             </div>
@@ -119,7 +123,7 @@ export default function Home({ color, accentColors, setColor }) {
                   d="M2 219.5L213 1L431.5 219.5L312 206.5C312 206.5 355.5 476.5 312 476.5C268.5 476.5 213 476.5 213 476.5C213 476.5 165 476.5 116.5 476.5C68 476.5 116.5 206.5 116.5 206.5L2 219.5Z"
                 />
               </svg>
-              <p className="text-white font-Poppins text-md mx-2 pt-2 opacity-70">
+              <p className="text-white font-[Inter] font-sans text-md mx-2 pt-2 opacity-70">
                 SCROLL
               </p>
             </div>
@@ -135,18 +139,22 @@ export default function Home({ color, accentColors, setColor }) {
                   d="M2 219.5L213 1L431.5 219.5L312 206.5C312 206.5 355.5 476.5 312 476.5C268.5 476.5 213 476.5 213 476.5C213 476.5 165 476.5 116.5 476.5C68 476.5 116.5 206.5 116.5 206.5L2 219.5Z"
                 />
               </svg>
-              <p className="text-white  font-Poppins text-md mx-2  pt-2  opacity-70 ">
+              <p className="text-white font-[Inter] font-sans text-md mx-2  pt-2  opacity-70 ">
                 SCROLL
               </p>
             </div>
           </section>
           <section
-            id="aboutPanel"
+            id="body"
+            className="panel relative h-full w-screen bg-black overflow-hidden max-w-screen"
+          >
+            <BodyPanel color={color} />
+          </section>
+          <section
+            id="footer"
             className="panel relative h-full w-screen bg-black"
           >
-            <div id="Footer" className="h-full w-auto">
-              <Footer color={color} />
-            </div>
+            <Footer color={color} />
           </section>
         </div>
       </main>
