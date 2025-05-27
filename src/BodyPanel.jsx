@@ -149,7 +149,7 @@ function BodyPanel({ color }) {
           id="content"
           className="content w-full h-full flex align-center text-left py-20"
         >
-          <div className="leftMenu xl:w-1/3 lg:w-1/6 w-0 h-full lg:visible collapse overflow-hidden">
+          <div className="leftMenu xl:w-1/3 lg:w-1/3 w-0 h-full lg:mx-4 xl:mx-0 lg:visible collapse overflow-hidden">
             <h1 className="text-white font-[Inter] font-bold font-sans text-6xl py-2">
               Matt Mills
             </h1>
