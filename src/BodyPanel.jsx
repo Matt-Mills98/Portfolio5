@@ -50,7 +50,7 @@ function BodyPanel({ color }) {
           speed: 0.5,
         },
       });
-      gsap
+      const tl = gsap
         .timeline({
           scrollTrigger: {
             trigger: ".content",
@@ -64,28 +64,32 @@ function BodyPanel({ color }) {
           { scale: 0, autoAlpha: 0 },
           { scale: 1, autoAlpha: 1, duration: 0 }
         )
-        .to("#navLine1", { scaleX: 2, width: "4.5rem", duration: 1 }, 0)
+        .to("#navLine1", { scaleX: 2, width: "4.5rem", duration: .3 }, 0)
         .fromTo(
           "#aboutHeader",
           { color: "#71717a" },
-          { color: color, duration: 1 },
+          { color: color, duration: .3 },
           0
         )
-        .to("#navLine1", { scaleX: 1, width: "2.5rem", duration: 5 }, 18)
-        .to("#aboutHeader", { color: "#71717a" }, 18)
+        .to("#navLine1", { scaleX: 1, width: "2.5rem", duration: 2 }, 4)
+        .to("#aboutHeader", { color: "#71717a" }, 4)
 
-        .to("#navLine2", { scaleX: 2, width: "4.5rem", duration: 5 }, 18)
+        .to("#navLine2", { scaleX: 2, width: "4.5rem", duration: 2 }, 4)
         .fromTo(
           "#expHeader",
           { color: "#71717a" },
-          { color: color, duration: 5 },
-          18
+          { color: color, duration: 2 },
+          4
         )
-        .to("#navLine2", { scaleX: 1, width: "2.5rem", duration: 5 }, 50)
-        .to("#expHeader", { color: "#71717a", duration: 5 }, 50)
+        .to("#navLine2", { scaleX: 1, width: "2.5rem", duration: 2 }, 16)
+        .to("#expHeader", { color: "#71717a", duration: 2 }, 16)
 
-        .to("#navLine3", { scaleX: 2, width: "4.5rem", duration: 5 }, 50)
-        .fromTo("#projHeader", { color: "#71717a" }, { color: color }, 50);
+        .to("#navLine3", { scaleX: 2, width: "4.5rem", duration: 2 }, 16)
+        .fromTo("#projHeader", { color: "#71717a" }, { color: color }, 16)
+
+        .to("#navLine3", { scaleX: 1, width: "2.5rem", duration: 2 }, 31)
+        .to("#projHeader", { color:  "#71717a" }, 31);
+      console.log(tl.duration());
     },
     { dependencies: [color], revertOnUpdate: true }
   );
@@ -253,7 +257,10 @@ function BodyPanel({ color }) {
             </div>
           </div>
 
-          <div id="scrollBody" className="body xs:w-full sm:w-full md:w-full lg:w-5/6 xl:w-2/3  h-full bg-zinc-900 overflow-hidden">
+          <div
+            id="scrollBody"
+            className="body xs:w-full sm:w-full md:w-full lg:w-5/6 xl:w-2/3  h-full bg-zinc-900 overflow-hidden"
+          >
             <div className="w-full bg-zinc-900 xl:px-20 lg:px-12 md:px-6 sm:px-2 xs:px-2">
               <div className="py-10 px-4">
                 <p className="text-zinc-400 font-[Inter] font-light font-sans  text-sm sm:text-sm md:text-base lg:text-base xl:text-base tracking-wide">
